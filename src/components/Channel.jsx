@@ -8,37 +8,22 @@ export const Channel = () => {
     const [messages, setMessages] = useState([])
 
     useEffect(()=>{
-        const f = async () => {
-            // console.log(c, c['get']);
-            console.log('1')
-            try {
-                console.log('1.5')
-                const v =  c.get()
-                console.log('3')
-                console.log(await v)
-                
-            } catch (e) {
-                console.log("Error",e )
-            }
-            console.log('2')
-            // const msgs = await c.get()
-            // console.log(msgs)
-            // setMessages(msgs)
-        }
-        f();  
+        c.get().then(v => setMessages(v))
     }, [])
 
     return (
     <div>
-       <div className="messages_body">{messages.map(m=>{
+       <div className="messages_body">{messages.map(m=>
         <div>{m}</div>
-       })}</div>
+       )}</div>
         <div className="post_box">
             <form>
                 <input id="post"></input>
-                <button value="post" onClick={async (e)=>{
-                    c.post(new Message(document.querySelector('#post').value))
+                <button value="post" onClick={(e)=>{
                     e.preventDefault();
+                    c.post(document.querySelector('#post').value)
+                        .then(() => c.get())
+                        .then(v => setMessages(v))
                 }}>Post</button>
             </form>
         </div>   

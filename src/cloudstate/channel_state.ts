@@ -13,7 +13,8 @@ export class ChannelState {
   get() {
     return this.messages.map(m=>m.get());
   }
-  post(message:Message) {
+  post(text: string) {
+    const message = new Message(text);
     this.messages.push(message);
   }
 }
